@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>RyanSpain.NET</title>
+    <link>https://ryanspain.net/</link>
+    
+    <image>
+      <url>https://ryanspain.net/icon.png</url>
+      <title>RyanSpain.NET</title>
+      <link>https://ryanspain.net/</link>
+    </image>
+    
+    <atom:link href="/rss2.xml" rel="self" type="application/rss+xml"/>
+    
+    <description></description>
+    <pubDate>Sat, 20 Feb 2021 03:08:41 GMT</pubDate>
+    <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>Build and Deploy a PCF Control Using Azure DevOps</title>
+      <link>https://ryanspain.net/posts/pcf-azure-devops-pipelines/</link>
+      <guid>https://ryanspain.net/posts/pcf-azure-devops-pipelines/</guid>
+      <pubDate>Mon, 18 May 2020 16:31:26 GMT</pubDate>
+      <description>
+      
+        In this post, I&#39;ll describe how you can use Azure DevOps build and release pipelines to build your PCF control from source control and deploy it to a Power Apps environment. I&#39;ll be building a single PCF control and only deploying to one environment, but this process can be expanded to handle multiple PCF controls and deploy across many environments.
+      
+      </description>
+      
+      
+      <comments>https://ryanspain.net/posts/pcf-azure-devops-pipelines/#disqus_thread</comments>
+    </item>
+    
+    <item>
+      <title>Build a PCF Text Control</title>
+      <link>https://ryanspain.net/posts/build-a-pcf-text-control/</link>
+      <guid>https://ryanspain.net/posts/build-a-pcf-text-control/</guid>
+      <pubDate>Sun, 15 Mar 2020 14:48:34 GMT</pubDate>
+      <description>
+      
+        To get familiar with the various lifecycle methods involved in making a custom control using the Power Apps Component Framework, I&#39;ll make a simple text input control - similar but not as fully featured as the out-of-box text control in model driven Power Apps.
+      
+      </description>
+      
+      
+      <comments>https://ryanspain.net/posts/build-a-pcf-text-control/#disqus_thread</comments>
+    </item>
+    
+    <item>
+      <title>Boilerplate PCF Project Setup</title>
+      <link>https://ryanspain.net/posts/pcf-project-setup/</link>
+      <guid>https://ryanspain.net/posts/pcf-project-setup/</guid>
+      <pubDate>Tue, 03 Mar 2020 16:01:20 GMT</pubDate>
+      <description>
+      
+        In this post, I&#39;ll outline the steps to take to get a boilerplate Power Apps Component Framework project set up and running locally on your machine. I&#39;ll cover building and packaging of the PCF control into an importable CDS solution.
+      
+      </description>
+      
+      
+      <comments>https://ryanspain.net/posts/pcf-project-setup/#disqus_thread</comments>
+    </item>
+    
+  </channel>
+</rss>

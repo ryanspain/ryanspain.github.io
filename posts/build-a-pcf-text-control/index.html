@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--Description-->
+
+    
+
+    
+    <meta name="description" content="To get familiar with the various lifecycle methods involved in making a custom control using the Power Apps Component Framework, I&#39;ll make a simple text input control - similar but not as fully featured as the out-of-box text control in model driven Power Apps." />
+    
+
+    <!--Author-->
+    
+    <meta name="author" content="Ryan Spain" />
+    
+
+    <!--Open Graph Title-->
+    
+    <meta property="og:title" content="Build a PCF Text Control" />
+    
+
+    <!--Open Graph Description-->
+    
+    <meta property="og:description" content="To get familiar with the various lifecycle methods involved in making a custom control using the Power Apps Component Framework, I&#39;ll make a simple text input control - similar but not as fully featured as the out-of-box text control in model driven Power Apps." />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="RyanSpain.NET" />
+
+    <!--Type page-->
+    
+    <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+    
+    <meta property="og:image" content="https://ryanspain.net/posts/build-a-pcf-text-control/cover.webp" />
+    <!-- <meta property="og:image" content="https://ryanspain.nethttps://ryanspain.net/posts/build-a-pcf-text-control/cover.webp"/> -->
+    
+
+    <meta name="twitter:card" content="summary_large_image" />
+
+    
+
+    
+    <meta name="twitter:image" content="https://ryanspain.net/posts/build-a-pcf-text-control/cover.webp" />
+    <!-- <meta name="twitter:image" content="https://ryanspain.nethttps://ryanspain.net/posts/build-a-pcf-text-control/cover.webp"/> -->
+    
+
+    <!-- Title -->
+    
+    <title>Build a PCF Text Control - RyanSpain.NET</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link
+        href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        rel="stylesheet" type="text/css" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css"
+        rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-166990104-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/img/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/img/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/rss2.xml" title="RyanSpain.NET" type="application/rss+xml">
+</head>
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">RyanSpain.NET</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/tags">
+                            
+                                Tags
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/ryanspain" target="_blank" rel="noopener">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url(/img/home-bg.webp)">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Build a PCF Text Control</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        <span class="post-meta"></span>
+                        <span class="post-meta">Posted on March 15th, 2020</span>
+                        <span class="post-meta">
+                            <span class="d-none d-md-inline middot">·</span>
+                            8 minute read
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+            
+            <div class="col-lg-5 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                
+                
+
+
+<a href="/tags/Power-Platform/">#Power Platform</a> <a href="/tags/Power-Apps/">#Power Apps</a> <a href="/tags/PCF/">#PCF</a> <a href="/tags/CDS/">#CDS</a>
+
+
+                
+            </div>
+            <div class="col-lg-4 col-md-5 post-categories">
+                
+            </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>I’m going to build a standard text control using the PowerApps Component Framework (PCF). The idea here is to replicate the out-of-box (OOB) text control available in model-driven apps as best I can.</p>
+<blockquote class="box-note"><p>Note: Custom controls built using PCF can be used in both model and canvas apps. I will only be considering model driven apps for now with a view to investigating canvas apps in the future.</p>
+</blockquote><p>This should help me understand the basic lifecycle methods provided by the [PCF] framework. I’ll discuss them as needed.</p>
+<p>📃<strong>Requirements:</strong></p>
+<ol>
+<li>Display the PCF control as a text input.</li>
+<li>Load the initial field value into the PCF control.</li>
+<li>Update the PCF control with the field value changes.</li>
+<li>Update the field when the PCF control value changes.</li>
+</ol>
+<p>Before I get started, I’ll assume you have the boilerplate PCF control project structure setup. You can find a short guide I wrote on that <a href="../pcf-project-setup">here</a>.</p>
+<h3 id="1-Display-the-PCF-control-as-a-text-input"><a href="#1-Display-the-PCF-control-as-a-text-input" class="headerlink" title="1. Display the PCF control as a text input"></a>1. Display the PCF control as a text input</h3><p>To do this, we need to create the text input DOM element. This should be done in the <code>init</code> method of the <code>index.ts</code> file. This method is called by the framework with the context and other parameters being passed in when your control is loading.</p>
+<p>First, add this member to the controls class in <code>index.ts</code>.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> _inputElement: HTMLInputElement;</span><br></pre></td></tr></table></figure>
+
+<p>Next we create this input element from the <code>init</code> method as below.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create HTML text input element</span></span><br><span class="line"><span class="keyword">this</span>._inputElement = <span class="built_in">document</span>.createElement(<span class="string">"input"</span>);</span><br><span class="line"><span class="keyword">this</span>._inputElement.setAttribute(<span class="string">"type"</span>, <span class="string">"text"</span>);</span><br><span class="line"><span class="keyword">this</span>._inputElement.setAttribute(<span class="string">"placeholder"</span>, <span class="string">"---"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>The <code>container</code> parameter passed in is a reference to the parent element the control is rendered in. Thats important because now, we add the below line to the <code>init</code> method to append the newly created <code>_inputElement</code> as a child to our <code>container</code> parameter which again, references the root element our control can render in.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Add the text input to the DOM</span></span><br><span class="line">container.appendChild(<span class="keyword">this</span>._inputElement);</span><br></pre></td></tr></table></figure>
+
+<p>Lets test the progress so far by running <code>npm run start</code>. The test harness should spin up and you should see a standard text input in the control area. You can edit the value of the text input but nothing happens, yet.</p>
+<h4 id="Explanation"><a href="#Explanation" class="headerlink" title="Explanation"></a>Explanation</h4><ul>
+<li>We made <code>_inputElement</code> a class member because we will want to access it later through another lifecycle method.</li>
+<li>The <code>init</code> method is called once by the framework when loading which makes for a good place to initialize the things that will be reused in the component. More info <a href="https://docs.microsoft.com/en-us/powerapps/developer/component-framework/reference/control/init" target="_blank" rel="noopener">here</a> in the docs.</li>
+</ul>
+<h3 id="2-Load-the-initial-field-value-into-the-PCF-control"><a href="#2-Load-the-initial-field-value-into-the-PCF-control" class="headerlink" title="2. Load the initial field value into the PCF control"></a>2. Load the initial field value into the PCF control</h3><p>When the control is loading, a context object containing the initial value of the underlying field is passed into the <code>init</code> method. We need to extract that value and use it to populate the value of our input element. Add this new property as a class member to hold the value.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> _inputValue: <span class="built_in">string</span>;</span><br></pre></td></tr></table></figure>
+
+<p>Next, in the <code>init</code> method, add these lines above where we appending the input to the container to extract the parameter passed in, and set the input elements value to it.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Extract the input value and update the input element</span></span><br><span class="line"><span class="keyword">this</span>._inputValue = context.parameters.inputValue.raw || <span class="string">""</span>;</span><br><span class="line"><span class="keyword">this</span>._inputElement.value = <span class="keyword">this</span>._inputValue;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong> If you’ve just been following along, you’ll get the below error. Without going into any extraordinary detail here, basically the <code>ManifestTypes.d.ts</code> file in the <strong>📁generated</strong> folder does not contain a definition for <code>inputValue</code>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Property &#39;inputValue&#39; does not exist on type &#39;IInputs&#39;</span><br></pre></td></tr></table></figure>
+
+<p>To fix this, [you guessed it] we need to update our manifest file which in effect (well, on the next build) will update our <code>ManifestTypes.d.ts</code> file. See below, we need to update the <code>property</code> node of the manifest file to specify <code>inputValue</code> as the name of our bound property. For everything you need to know about the manifest file, see <a href="https://docs.microsoft.com/en-us/powerapps/developer/component-framework/manifest-schema-reference/" target="_blank" rel="noopener">here</a> for the official documentation.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"inputValue"</span> <span class="attr">display-name-key</span>=<span class="string">"Property_Display_Key"</span> <span class="attr">description-key</span>=<span class="string">"Property_Desc_Key"</span> <span class="attr">of-type</span>=<span class="string">"SingleLine.Text"</span> <span class="attr">usage</span>=<span class="string">"bound"</span> <span class="attr">required</span>=<span class="string">"true"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Run <code>npm run build</code> and the manifest definition file will be updated and the errors should be gone. You’ll see the property on the <code>IInputs</code> type in the <code>ManifestTypes.d.ts</code> file.<br>Test the PCF control by running <code>npm run start</code>. In the test harness, the <code>inputValue</code> property in the data inputs on the right hand side should be loaded into the text input on load. Try editing the value in the data input and refreshing the page as below.</p>
+<p><img src="10.gif" alt="Image"></p>
+<p>This covers the on load scenario but as you have observed, the PCF control isn’t updated when a change takes places after the initial load. We’ll cover that next.</p>
+<h3 id="3-Update-the-PCF-control-with-the-field-value-changes"><a href="#3-Update-the-PCF-control-with-the-field-value-changes" class="headerlink" title="3. Update the PCF control with the field value changes"></a>3. Update the PCF control with the field value changes</h3><p>When the underlying field value changes, the framework calls the <code>updateView</code> method on our PCF control class. Like the <code>init</code> method, it passed in a context object that again, holds the value of the field, be it changed or not. Following the same flow as the <code>init</code> method, lets extract that value, update our classes <code>_inputValue</code> property, and update the value of our <code>_inputElement</code>. Add the below to the <code>updateView</code> method.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Extract the input value and update the input element</span></span><br><span class="line"><span class="keyword">this</span>._inputValue = context.parameters.inputValue.raw || <span class="string">""</span>;</span><br><span class="line"><span class="keyword">this</span>._inputElement.value = <span class="keyword">this</span>._inputValue;</span><br></pre></td></tr></table></figure>
+
+<p>Test this and note that when the <code>inputValue</code> data input changes, the PCF control updates with the new value, as below. Magic! 🔮</p>
+<p><img src="20.gif" alt="Image"></p>
+<h3 id="4-Update-the-field-when-the-PCF-control-value-changes"><a href="#4-Update-the-field-when-the-PCF-control-value-changes" class="headerlink" title="4. Update the field when the PCF control value changes"></a>4. Update the field when the PCF control value changes</h3><p>We need to notify the framework when ever a change has occurred to our PCF controls value so the framework can update the underlying record property. To do this we make use of the <code>notifyOutputChanged</code> method that is passed into the <code>ìnit</code> method of our control class. This methods in turn triggers the invocation of our <code>getOutputs</code> method which should return the latest value.</p>
+<h4 id="When-do-we-call-notifyOutputChanged"><a href="#When-do-we-call-notifyOutputChanged" class="headerlink" title="When do we call notifyOutputChanged"></a>When do we call <code>notifyOutputChanged</code></h4><p>In most scenario’s, it makes sense to let the framework know we have changes we’d like persisted to the records property when ever we get them. However, the OOB text control does this on the blur event of the input. So, for that reason, we’ll invoke it when the PCF controls input raised the blur event. To get started, store the <code>notifyOutputChanged</code> method as a class member.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> _notifyOutputChanged: <span class="built_in">void</span>;</span><br></pre></td></tr></table></figure>
+
+<p>Assign it in the <code>init</code> method.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>._notifyOutputChanged = notifyOutputChanged;</span><br></pre></td></tr></table></figure>
+
+<p>Next, created the below class function to intercept the on change event, store the new value, and notify the framework there are changes to be retrieved.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> onBlur = (event: Event): <span class="function"><span class="params">void</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">this</span>._inputValue = <span class="keyword">this</span>._inputElement.value;</span><br><span class="line">  <span class="keyword">this</span>._notifyOutputChanged();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Using the above function, register an on blur event handler on the input element. This can be added just before you append the input element to the container in the <code>init</code> method.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Attach on change event handler</span></span><br><span class="line"><span class="keyword">this</span>._inputElement.addEventListener(<span class="string">"blur"</span>, <span class="keyword">this</span>.onChange);</span><br></pre></td></tr></table></figure>
+
+<p>Finally, update the <code>getOutputs</code> method to return the latest input value.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> getOutputs(): IOutputs &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    inputValue: <span class="keyword">this</span>._inputValue</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Running the PCF control in the test harness now should allow you to update the PCF control value, lose focus on the input, and see the changes in the data input property on the right.</p>
+<p><img src="30.gif" alt="Image"></p>
+<h4 id="Make-it-look-pretty"><a href="#Make-it-look-pretty" class="headerlink" title="Make it look pretty"></a>Make it look pretty</h4><p>You will have noticed that the styling isn’t anything special and certainly doesn’t match the control styling of other OOB controls. To fix that, add the below CSS to a file named <code>styles.css</code> in the <strong>📁css</strong> folder. The folder should be in the same directory as <code>index.ts</code>, but if not, just create it.</p>
+<details>
+<summary>Show CSS</summary>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.textInputControl</span> &#123;</span><br><span class="line">    <span class="attribute">text-size-adjust</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">-webkit-tap-highlight-color</span>: <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="attribute">white-space</span>: normal;</span><br><span class="line">    <span class="attribute">word-break</span>: normal;</span><br><span class="line">    <span class="attribute">font-style</span>: normal;</span><br><span class="line">    <span class="attribute">font-variant</span>: normal;</span><br><span class="line">    <span class="attribute">font-family</span>: <span class="string">'SegoeUI'</span>, <span class="string">'Segoe UI'</span>;</span><br><span class="line">    <span class="attribute">margin-left</span>: <span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">margin-right</span>: <span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">2.5rem</span>;</span><br><span class="line">    <span class="attribute">text-overflow</span>: ellipsis;</span><br><span class="line">    <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">    <span class="attribute">border-style</span>: solid;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">font-weight</span>: <span class="number">600</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">1rem</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="built_in">rgb</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="attribute">border-width</span>: <span class="number">1px</span>;</span><br><span class="line">    <span class="attribute">padding-left</span>: <span class="number">0.5rem</span>;</span><br><span class="line">    <span class="attribute">padding-right</span>: <span class="number">0.5rem</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">2.5rem</span>;</span><br><span class="line">    <span class="attribute">border-color</span>: transparent;</span><br><span class="line">    <span class="attribute">outline</span>: none <span class="meta">!important</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="selector-class">.textInputControl</span><span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">    <span class="attribute">border-color</span>: <span class="built_in">rgb</span>(<span class="number">102</span>, <span class="number">102</span>, <span class="number">102</span>);</span><br><span class="line">    <span class="attribute">border-width</span>: <span class="number">1px</span>;</span><br><span class="line">    <span class="attribute">border-style</span>: solid;</span><br><span class="line">    <span class="attribute">margin-right</span>: <span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">margin-left</span>: <span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">padding-right</span>: <span class="number">0.5rem</span>;</span><br><span class="line">    <span class="attribute">padding-left</span>: <span class="number">0.5rem</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="built_in">rgb</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="attribute">font-weight</span>: <span class="number">400</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">1rem</span>;</span><br><span class="line">    <span class="attribute">text-overflow</span>: ellipsis;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">2.5rem</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">2.5rem</span>;</span><br><span class="line">    <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="built_in">rgb</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+</details>
+
+<p>Next, add the CSS file as a resource in the manifest file as below. Simply add the below line to the <code>resources</code> node.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">css</span> <span class="attr">path</span>=<span class="string">"styles.css"</span> <span class="attr">order</span>=<span class="string">"1"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Add the <code>textInputControl</code> CSS class to the input element in the <code>init</code> method using the below line.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>._inputElement.setAttribute(<span class="string">"class"</span>, <span class="string">"textInputControl"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>Test once again and the style should be more of less the same as the OOB control.</p>
+<p><img src="result.gif" alt="Result"></p>
+<h3 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h3><p>You can get the source code/solutions for the control so far <a href="https://github.com/ryanspain/pcf-text-input-control/releases/tag/v1.0.0" target="_blank" rel="noopener">here</a> on my GitHub. I’ve included some instructions on building and deploying the control also in the <code>readme</code>.</p>
+<h3 id="Moving-forward"><a href="#Moving-forward" class="headerlink" title="Moving forward"></a>Moving forward</h3><p>I plan to make some changes to this simple text control to handle some other behaviors that a true production ready control should. Including:</p>
+<ul>
+<li>Complete styling</li>
+<li>Handling read-only states</li>
+<li>Handling security</li>
+</ul>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+
+
+            </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/ryanspain" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2021 Ryan Spain<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

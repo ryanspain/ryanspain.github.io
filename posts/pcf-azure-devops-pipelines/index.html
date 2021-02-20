@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--Description-->
+
+    
+
+    
+    <meta name="description" content="In this post, I&#39;ll describe how you can use Azure DevOps build and release pipelines to build your PCF control from source control and deploy it to a Power Apps environment. I&#39;ll be building a single PCF control and only deploying to one environment, but this process can be expanded to handle multiple PCF controls and deploy across many environments." />
+    
+
+    <!--Author-->
+    
+    <meta name="author" content="Ryan Spain" />
+    
+
+    <!--Open Graph Title-->
+    
+    <meta property="og:title" content="Build and Deploy a PCF Control Using Azure DevOps" />
+    
+
+    <!--Open Graph Description-->
+    
+    <meta property="og:description" content="In this post, I&#39;ll describe how you can use Azure DevOps build and release pipelines to build your PCF control from source control and deploy it to a Power Apps environment. I&#39;ll be building a single PCF control and only deploying to one environment, but this process can be expanded to handle multiple PCF controls and deploy across many environments." />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="RyanSpain.NET" />
+
+    <!--Type page-->
+    
+    <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+    
+    <meta property="og:image" content="https://ryanspain.net/posts/pcf-azure-devops-pipelines/share-cover.png" />
+    <!-- <meta property="og:image" content="https://ryanspain.nethttps://ryanspain.net/posts/pcf-azure-devops-pipelines/share-cover.png"/> -->
+    
+
+    <meta name="twitter:card" content="summary_large_image" />
+
+    
+
+    
+    <meta name="twitter:image" content="https://ryanspain.net/posts/pcf-azure-devops-pipelines/share-cover.png" />
+    <!-- <meta name="twitter:image" content="https://ryanspain.nethttps://ryanspain.net/posts/pcf-azure-devops-pipelines/share-cover.png"/> -->
+    
+
+    <!-- Title -->
+    
+    <title>Build and Deploy a PCF Control Using Azure DevOps - RyanSpain.NET</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link
+        href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        rel="stylesheet" type="text/css" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css"
+        rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-166990104-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/img/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/img/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/rss2.xml" title="RyanSpain.NET" type="application/rss+xml">
+</head>
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">RyanSpain.NET</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/tags">
+                            
+                                Tags
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/ryanspain" target="_blank" rel="noopener">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-color: #0078D4;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Build and Deploy a PCF Control Using Azure DevOps</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        <span class="post-meta"></span>
+                        <span class="post-meta">Posted on May 18th, 2020</span>
+                        <span class="post-meta">
+                            <span class="d-none d-md-inline middot">·</span>
+                            7 minute read
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+            
+            <div class="col-lg-5 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                
+                
+
+
+<a href="/tags/Power-Platform/">#Power Platform</a> <a href="/tags/Power-Apps/">#Power Apps</a> <a href="/tags/PCF/">#PCF</a> <a href="/tags/Azure-DevOps/">#Azure DevOps</a> <a href="/tags/Azure-Pipelines/">#Azure Pipelines</a> <a href="/tags/ALM/">#ALM</a>
+
+
+                
+            </div>
+            <div class="col-lg-4 col-md-5 post-categories">
+                
+            </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>In this post, I’ll describe how you can use Azure DevOps build and release pipelines to build your PCF control from source control and deploy it to a Power Apps environment. I’ll be building a single PCF control and only deploying to one environment, but this process can be expanded to handle multiple PCF controls and deploy across many environments</p>
+<p><img src="process-overview.png" alt="Process overview"></p>
+<blockquote class="box-note"><p>I’ll be using an unmanaged solution package type throughout the build pipeline. This is because the resulting solution will only ever be installed in my development/build environment. From there, the PCF controls within can be added to another solution to be exported as managed for deployment to downstream environments.</p>
+</blockquote><h2 id="Creating-the-build-pipeline"><a href="#Creating-the-build-pipeline" class="headerlink" title="Creating the build pipeline"></a>Creating the build pipeline</h2><p>From the pipelines area of your Azure DevOps project, select the <strong>Create pipeline</strong> button. I’m not a fan of using YAML so I choose to click <strong>Use the classic editor</strong> at the bottom of the page.</p>
+<p>Next, let the pipeline know where your PCF control source is - my control source code is in GitHub so I’ve provided an existing connection, specified the repository, and branch. On the next step, select the <strong>Empty job</strong> link instead of using one of the suggested templates.</p>
+<p><img src="build-pipeline-setup.gif" alt="Build pipeline setup"></p>
+<p>Feel free to fork <a href="https://github.com/ryanspain/pcf-text-input-control" target="_blank" rel="noopener">the same repository</a> if your following along. It was the result of <a href="/posts/build-a-pcf-text-control">this</a> blog post.</p>
+<h3 id="Adding-build-tasks"><a href="#Adding-build-tasks" class="headerlink" title="Adding build tasks"></a>Adding build tasks</h3><p>The idea here is that we are going to add tasks to our empty agent pool that simulate actual tasks that you (a human), would perform to build the source code locally on your machine.</p>
+<h4 id="1-Install-required-NPM-packages"><a href="#1-Install-required-NPM-packages" class="headerlink" title="1. Install required NPM packages"></a>1. Install required NPM packages</h4><p>This task should be familiar for most (as should all… I’ll say no more). On your PC you run <code>npm install</code> from your projects <code>package.json</code> directory to download the required node modules into the <strong>📁node_modules</strong> folder. We;ll use the <strong>npm</strong> task for this and target the 📁<strong>src/project</strong>.</p>
+<p><img src="install-required-npm-packages.gif" alt="Install required NPM packages"></p>
+<small>
+
+<p><strong>Task:</strong> npm<br><strong>Command:</strong> <code>install</code><br><strong>Working folder that contains package.json:</strong> <code>src/project</code></p>
+</small>
+
+<h4 id="2-Build-the-solution"><a href="#2-Build-the-solution" class="headerlink" title="2. Build the solution"></a>2. Build the solution</h4><p>Awesomely, Power Apps Component Framework controls can be packaged into a Power Apps solution using MSBuild. We just need to target the <code>cdsproj</code> file which references our PCF controls. We’ll use the MSBuild pipeline task.</p>
+<p><img src="build-the-solution.gif" alt="Build the solution"></p>
+<small>
+
+<p><strong>Task:</strong> MSBuild<br><strong>Project:</strong> **/*.cdsproj <sup><strong>1</strong></sup><br><strong>MSBuild Arguments:</strong> <code>/t:build /restore /p:configuration=Release</code> <sup><strong>2</strong></sup></p>
+<p><sup><strong>1</strong></sup> | We are using a wildcard to find our <code>cdsproj</code> file - my source control only contains one.<br><sup><strong>2</strong></sup> | The <code>/restore</code> argument makes sure the required NuGet packages are fetched while <code>/p:configuration=Release</code> instructs webpack to run in production mode, reducing the file size of the <code>bundle.js</code>.<br></small></p>
+<blockquote class="box-note"><p>Diana Birkelbach does a good solution size comparison over <a href="https://dianabirkelbach.wordpress.com/2020/04/28/pcf-solution-packaging-unmanaged-production-release/" target="_blank" rel="noopener">here</a> on her blog.</p>
+</blockquote><h4 id="3-Install-Power-DevOps-Tool-Installer"><a href="#3-Install-Power-DevOps-Tool-Installer" class="headerlink" title="3. Install Power DevOps Tool Installer"></a>3. Install Power DevOps Tool Installer</h4><p>I use <a href="https://marketplace.visualstudio.com/items?itemName=WaelHamze.xrm-ci-framework-build-tasks" target="_blank" rel="noopener">Power DevOps</a> tools by Wael Hamze for Power Apps related ALM. Make sure you have that extension installed in your Azure DevOps organization, then add the below task to the agent pool. No properties need to be set for this task.</p>
+<p><img src="install-build-power-devops-tool-installer.gif" alt="Install buildPower DevOps tool installer"></p>
+<small>
+
+<p><strong>Task:</strong> Power DevOps Tool Installer</p>
+<blockquote class="box-note"><p>We could use Microsoft’s <a href="https://docs.microsoft.com/en-us/powerapps/developer/common-data-service/build-tools-overview" target="_blank" rel="noopener">Power Apps build tools for Azure DevOps</a>, however, I’m in favor of Power DevOps simply because its more mature and has support for using a connection string in the tasks.</p>
+</blockquote></small>
+
+<h4 id="4-Extract-the-solution"><a href="#4-Extract-the-solution" class="headerlink" title="4. Extract the solution"></a>4. Extract the solution</h4><p>We need to extract the contents of the solution we built using MSBuild so we can perform some actions on it. For this we’ll use the <strong>Extract Solution</strong> task provided by the extension installed previously. We let this task know what solution ZIP file we want to extract, and where we want it extracted.</p>
+<p><img src="extract-the-solution.gif" alt="Extract the solution"></p>
+<small>
+
+<p><strong>Task:</strong> Extract Solution<br><strong>Unpacked Files Folder:</strong> <code>$(Build.ArtifactStagingDirectory)/SolutionExtracted</code><br><strong>Solution File:</strong> <code>src/solution/bin/Release/solution.zip</code></p>
+</small>
+
+<h4 id="5-Set-the-solution-version"><a href="#5-Set-the-solution-version" class="headerlink" title="5. Set the solution version"></a>5. Set the solution version</h4><p>We’ll use the build number to set the solution version for the unpacked solution files. Again, using a task provided by Power DevOps, named <strong>Set Version</strong>.</p>
+<p><img src="set-solution-version.gif" alt="Set the solution version"></p>
+<small>
+
+<p><strong>Task:</strong> Set Version<br><strong>Target:</strong> Unpacked Solution Customizations<br><strong>Unpacked Files Folder:</strong> <code>$(Build.ArtifactStagingDirectory)/SolutionExtracted</code> <sup><strong>1</strong></sup><br><strong>Version Number:</strong> 1.0.0.<code>$(Build.BuildNumber)</code> <sup><strong>2</strong></sup></p>
+<p><sup><strong>1</strong></sup> | Notice we are using tha same directory path again. We should probably use variables for this! More on this a little later.<br><sup><strong>2</strong></sup> | Build number is a pre-defined variable. We’ve been using these already - more <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml" target="_blank" rel="noopener">here</a>.</p>
+</small>
+
+<h4 id="6-Set-the-PCF-control-version"><a href="#6-Set-the-PCF-control-version" class="headerlink" title="6. Set the PCF control version"></a>6. Set the PCF control version</h4><p>This is a little tricky as there is no Azure DevOps task as of yet to update the version attribute on the PCF control node of the manifest file. I settled on writing my own PowerShell function to accomplish this. It set the build number portion of the controls version to the current build number of the pipeline.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">PCF-IncreaseControlBuildNumber</span><span class="params">(<span class="variable">$manifestFilePath</span>)</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Read in XML file</span></span><br><span class="line">    <span class="variable">$xml</span> = [<span class="built_in">xml</span>](<span class="built_in">Get-Content</span> <span class="variable">$manifestFilePath</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Get current control version</span></span><br><span class="line">    <span class="variable">$controlVersion</span> = [<span class="type">version</span>]<span class="variable">$xml</span>.SelectSingleNode(<span class="string">"/manifest/control"</span>).version</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Build the new control version</span></span><br><span class="line">    <span class="variable">$newControlVersion</span> = <span class="string">"&#123;0&#125;.&#123;1&#125;.&#123;2&#125;"</span> <span class="operator">-f</span> <span class="variable">$controlVersion</span>.Major, <span class="variable">$controlVersion</span>.Minor, <span class="variable">$</span>(Build.BuildNumber)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Set the new control version</span></span><br><span class="line">    <span class="variable">$xml</span>.SelectSingleNode(<span class="string">"/manifest/control"</span>).version = <span class="variable">$newControlVersion</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Save the updated XML</span></span><br><span class="line">    <span class="variable">$xml</span>.Save(<span class="variable">$manifestFilePath</span>)</span><br><span class="line">&#125;</span><br><span class="line">PCF<span class="literal">-IncreaseControlBuildNumber</span>(<span class="string">"<span class="variable">$</span>(Build.ArtifactStagingDirectory)/SolutionExtracted/Controls/rsnet_RyanSpain.NET.TextInputControl/ControlManifest.xml"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="set-pcf-control-version.gif" alt="Set the PCF control version"></p>
+<small>
+
+<p><strong>Task:</strong> PowerShell<br><strong>Type:</strong> Inline<br><strong>Script:</strong> As above and ensure you update with the path your your manifest file</p>
+</small>
+
+<blockquote class="box-note"><p>The initial draft of this post included a reference to a PowerShell function I found over <a href="https://www.itaintboring.com/dynamics-crm/pcf-controls-now-i-have-my-first-pcf-control-too/" target="_blank" rel="noopener">here</a>. However I found an issue with that (that took 2 hours of my life to figure out), and decided to have a go at this myself, without regular expressions! You can check out my pull request on the original source <a href="https://github.com/ashlega/ITAintBoring.PCFControls/pull/14" target="_blank" rel="noopener">here</a> if your interested.</p>
+</blockquote><h4 id="7-Pack-the-solution"><a href="#7-Pack-the-solution" class="headerlink" title="7. Pack the solution"></a>7. Pack the solution</h4><p>With the solution and PCF control versions set, we can pack the solutions contents using the <strong>Pack Solution</strong> task. We’ll tell this task where the solution contents are, and where to place the packed solution ZIP once finished.</p>
+<p><img src="pack-the-solution.gif" alt="Pack the solution"></p>
+<!-- <font size="3em" > -->
+
+<small>
+
+<p><strong>Task:</strong> Pack Solution<br><strong>Unpacked Files Folder:</strong> <code>$(Build.ArtifactStagingDirectory)/SolutionExtracted</code><br><strong>Package Type:</strong> Unmanaged<br><strong>Output Path:</strong> <code>$(Build.ArtifactStagingDirectory)/SolutionPacked</code></p>
+</small>
+
+<!-- </font> -->
+
+<h4 id="8-Publish-solution-artifact"><a href="#8-Publish-solution-artifact" class="headerlink" title="8. Publish solution artifact"></a>8. Publish solution artifact</h4><p>In order for the release pipeline to have something to release, we need to publish our packed solution ZIP as a build artifact.</p>
+<p><img src="publish-solution-artifact.gif" alt="Publish solution artifact"></p>
+<small>
+
+<p><strong>Task:</strong> Publish build artifacts<br><strong>Path to publish:</strong> <code>$(Build.ArtifactStagingDirectory)/SolutionPacked</code><br><strong>Artifact name:</strong> Solution</p>
+</small>
+
+<h4 id="🧪-Test-the-build-pipeline"><a href="#🧪-Test-the-build-pipeline" class="headerlink" title="🧪 Test the build pipeline"></a>🧪 Test the build pipeline</h4><p>Queue the build pipeline, resolve any errors, and wait for it to complete. It should take about 2 minutes and the resulting build artifact should resemble the below.</p>
+<p><img src="test-build-pipeline.gif" alt="Test the build pipeline"></p>
+<h2 id="Creating-the-release-pipeline"><a href="#Creating-the-release-pipeline" class="headerlink" title="Creating the release pipeline"></a>Creating the release pipeline</h2><p>From <strong>Pipelines &gt; Releases</strong>, create a new pipeline using the <strong>Empty job</strong> template. Give the default stage a name like development or build. Again, I’ll only be deploying to one environment so there will only be one stage in this release pipeline.</p>
+<p>Next, use the <strong>Add an artifact</strong> card and select the build pipeline as the <strong>Source</strong>. I like to update the <strong>Source alias</strong> too while I’m here - I set it to <code>_Build</code>. Finally, give your release pipeline a meaningful name.</p>
+<p><img src="release-pipeline-setup.gif" alt="Release pipeline setup"></p>
+<small>
+
+<p><strong>Artifact Source:</strong> Build pipeline from<br><strong>Default version:</strong> Latest<br><strong>Artifact Source alias:</strong> _Build</p>
+</small>
+
+<h3 id="Adding-release-tasks"><a href="#Adding-release-tasks" class="headerlink" title="Adding release tasks"></a>Adding release tasks</h3><p>This is as simple as just importing the solution ZIP from our build pipeline artifact. Again, we’ll being using the Power DevOps tools so make sure you have that installed in your organization.</p>
+<h4 id="1-Install-Power-DevOps-Tool-Installer"><a href="#1-Install-Power-DevOps-Tool-Installer" class="headerlink" title="1. Install Power DevOps Tool Installer"></a>1. Install Power DevOps Tool Installer</h4><p>Open out the stage tasks and add the <strong>Power DevOps Tool Installer</strong> to the agent pool. There is no configuration required here.</p>
+<p><img src="install-release-power-devops-tool-installer.gif" alt="Install release Power DevOps tool installer"></p>
+<small>
+
+<p><strong>Task:</strong> Power DevOps Tool Installer</p>
+</small>
+
+<h4 id="2-Import-solution"><a href="#2-Import-solution" class="headerlink" title="2. Import solution"></a>2. Import solution</h4><p>Finally, we use the <strong>Import Solution</strong>  task to import the build solution into our Power Apps environment. We just need to provide a connection string and the location of our solution ZIP file.</p>
+<p><img src="import-solution.gif" alt="Import solution"></p>
+<small>
+
+<p><strong>Task:</strong> Import Solution<br><strong>Connection String:</strong> Using your preferred authentication type<br><strong>Solution File:</strong> <code>$(Release.PrimaryArtifactSourceAlias)\Solution\TextInputControl.zip</code> <sup><strong>1</strong></sup></p>
+<p><sup><strong>1</strong></sup> | <code>Solution</code> is the name given to the artifact we published in the build pipeline while <code>TextInputControl.zip</code> is derived from the name I gave my solution in the  <code>Solution.xml</code> in source control.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">SolutionManifest</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Unique Name of Cds Solution--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">UniqueName</span>&gt;</span>TextInputControl<span class="tag">&lt;/<span class="name">UniqueName</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">SolutionManifest</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+</small>
+
+<h4 id="🧪-Test-the-release-pipeline"><a href="#🧪-Test-the-release-pipeline" class="headerlink" title="🧪 Test the release pipeline"></a>🧪 Test the release pipeline</h4><p>Save your release pipeline and create a new release based on the successful build pipeline. Wait for the release tasks to complete, and once successful, the solution file will have imported into the target environment.</p>
+<p><img src="test-release-pipeline.gif" alt="Test release pipeline"></p>
+<h2 id="Variables"><a href="#Variables" class="headerlink" title="Variables"></a>Variables</h2><p>Throughout this guide, I reused the same string configuration properties for some of the build and release tasks. Some if not all of these string properties are excellent candidates for pipeline variables. In the interest of keeping things clear (I hope), I didn’t create any custom variables. The variable structure I’ve used for my past 3 PCF controls has evolved into the below.</p>
+<p><img src="pipeline-variables-setup.png" alt="Pipeline variables setup"></p>
+<p>As you can probably tell, there is little duplication in strings. However one could argue it can be a little hard to follow, or update!</p>
+<p>I hope you found this post useful in some way or form!</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+
+
+            </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/ryanspain" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2021 Ryan Spain<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

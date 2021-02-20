@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--Description-->
+
+    
+
+    
+    <meta name="description" content="In this post, I&#39;ll outline the steps to take to get a boilerplate Power Apps Component Framework project set up and running locally on your machine. I&#39;ll cover building and packaging of the PCF control into an importable CDS solution." />
+    
+
+    <!--Author-->
+    
+    <meta name="author" content="Ryan Spain" />
+    
+
+    <!--Open Graph Title-->
+    
+    <meta property="og:title" content="Boilerplate PCF Project Setup" />
+    
+
+    <!--Open Graph Description-->
+    
+    <meta property="og:description" content="In this post, I&#39;ll outline the steps to take to get a boilerplate Power Apps Component Framework project set up and running locally on your machine. I&#39;ll cover building and packaging of the PCF control into an importable CDS solution." />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="RyanSpain.NET" />
+
+    <!--Type page-->
+    
+    <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+    
+    <meta property="og:image" content="https://ryanspain.net/posts/pcf-project-setup/cover.jpg" />
+    <!-- <meta property="og:image" content="https://ryanspain.nethttps://ryanspain.net/posts/pcf-project-setup/cover.jpg"/> -->
+    
+
+    <meta name="twitter:card" content="summary_large_image" />
+
+    
+
+    
+    <meta name="twitter:image" content="https://ryanspain.net/posts/pcf-project-setup/cover.jpg" />
+    <!-- <meta name="twitter:image" content="https://ryanspain.nethttps://ryanspain.net/posts/pcf-project-setup/cover.jpg"/> -->
+    
+
+    <!-- Title -->
+    
+    <title>Boilerplate PCF Project Setup - RyanSpain.NET</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link
+        href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+        rel="stylesheet" type="text/css" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css"
+        rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-166990104-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/img/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/img/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/rss2.xml" title="RyanSpain.NET" type="application/rss+xml">
+</head>
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">RyanSpain.NET</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/tags">
+                            
+                                Tags
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/ryanspain" target="_blank" rel="noopener">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url(/img/home-bg.webp)">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Boilerplate PCF Project Setup</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        <span class="post-meta"></span>
+                        <span class="post-meta">Posted on March 3rd, 2020</span>
+                        <span class="post-meta">
+                            <span class="d-none d-md-inline middot">·</span>
+                            3 minute read
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+            
+            <div class="col-lg-5 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                
+                
+
+
+<a href="/tags/Power-Platform/">#Power Platform</a> <a href="/tags/Power-Apps/">#Power Apps</a> <a href="/tags/PCF/">#PCF</a>
+
+
+                
+            </div>
+            <div class="col-lg-4 col-md-5 post-categories">
+                
+            </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>Here are some steps  to follow to get a Power Apps Component Framework (PCF) boilerplate project setup locally on your PC.</p>
+<h3 id="Tooling-requirements"><a href="#Tooling-requirements" class="headerlink" title="Tooling requirements"></a>Tooling requirements</h3><ul>
+<li><a href="https://docs.microsoft.com/en-us/powerapps/developer/common-data-service/powerapps-cli" target="_blank" rel="noopener">Power Apps CLI</a></li>
+<li><a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">Node.js (LTS)</a></li>
+<li><a href="https://dotnet.microsoft.com/download/dotnet-framework/net462" target="_blank" rel="noopener">.NET Framework 4.6.2 Dev Pack</a></li>
+<li><a href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener">Visual Studio or Visual Studio Code</a></li>
+</ul>
+<h3 id="Folder-structure"><a href="#Folder-structure" class="headerlink" title="Folder structure"></a>Folder structure</h3><p>I usually follow the same project structure for each PCF project I am working on which looks like below - assuming there is just a single PCF control being  developed:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">📁src</span><br><span class="line">    📁project</span><br><span class="line">    📁solution</span><br></pre></td></tr></table></figure>
+
+<p>The <strong>📁project</strong> folder contains the assets used to build the PCF control and the <strong>📁solution</strong> folder contains the assets required to build and package a solution ZIP file for import into a CDS environment.</p>
+<h3 id="Create-the-PCF-project"><a href="#Create-the-PCF-project" class="headerlink" title="Create the PCF project"></a>Create the PCF project</h3><p>From within the <strong>📁project</strong> folder, open PowerShell and run the below Power Apps CLI command:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pac pcf init --namespace RyanSpain.NET --name HelloWorldControl --template field</span><br></pre></td></tr></table></figure>
+
+<p>This command creates the PCF project and required assets. The <strong>📁project</strong> folder structure should now look similar to the below:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">📁project</span><br><span class="line">    📁HelloWorldControl</span><br><span class="line">       📁generated</span><br><span class="line">       📄ControlManifest.Input.xml</span><br><span class="line">       📄 index.ts</span><br><span class="line">    📄.gitignore</span><br><span class="line">    📄package.json</span><br><span class="line">    📄pcfconfig.json</span><br><span class="line">    📄project.pcfproj</span><br><span class="line">    📄tsconfig.json</span><br></pre></td></tr></table></figure>
+
+<p>Note the <strong>📄project.pcfproj</strong> is named after the folder in which the command is run. This is why I have the folder structure I do 😊</p>
+<h4 id="Install-required-packages"><a href="#Install-required-packages" class="headerlink" title="Install required packages"></a>Install required packages</h4><p>Run this command in the <strong>📁project</strong> folder to download the packages required to build the project.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i</span><br></pre></td></tr></table></figure>
+
+<p>The downloaded packages are located in <strong>📁project/node_modules</strong>.</p>
+<h4 id="Build-and-test-the-project"><a href="#Build-and-test-the-project" class="headerlink" title="Build and test the project"></a>Build and test the project</h4><p>While there is no functionality yet, you can use the below commands to build and test the project as-is.</p>
+<h5 id="Build"><a href="#Build" class="headerlink" title="Build"></a>Build</h5><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+
+<p>The bundled output of the build can be found in <strong>📁project/out</strong>. This path is configured in the <strong>📄pcfconfig.json</strong> file.</p>
+<h5 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h5><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run <span class="built_in">start</span></span><br></pre></td></tr></table></figure>
+
+<p>This command will build the project and run it using the Power Apps Component Test Framework harness in your browser.</p>
+<h3 id="Create-the-CDS-solution-project"><a href="#Create-the-CDS-solution-project" class="headerlink" title="Create the CDS solution project"></a>Create the CDS solution project</h3><p>From within the <strong>📁solution</strong> folder, open PowerShell and run the below Power Apps CLI command:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pac solution init --publisher-name RSNET --publisher-prefix rsnet</span><br></pre></td></tr></table></figure>
+
+<p>This command creates the CDS solution project and required assets. The <strong>📁solution</strong> folder structure should now look similar to the below:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">📁solution</span><br><span class="line">    📁Other</span><br><span class="line">    📄.gitignore</span><br><span class="line">    📄 solution.cdsproj</span><br></pre></td></tr></table></figure>
+
+<p>Again, the <strong>📄solution.cdsproj</strong> is named after the folder in which the command is run.</p>
+<h4 id="Reference-the-PCF-project"><a href="#Reference-the-PCF-project" class="headerlink" title="Reference the PCF project"></a>Reference the PCF project</h4><p>We need to reference any PCF project(s) we want to be included in the CDS solution file we will generate. To do this, run the below command in the <strong>📁solution</strong> folder.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pac solution add-reference --<span class="built_in">path</span> ../project</span><br></pre></td></tr></table></figure>
+
+<p>The <code>--path</code> argument requires the folder in with the <code>pcfproj</code> file is located.</p>
+<h4 id="Build-and-package-the-solution"><a href="#Build-and-package-the-solution" class="headerlink" title="Build and package the solution"></a>Build and package the solution</h4><p>To generate a CDS solution that can be imported, we need to run <code>msbuild</code> in the <strong>📁solution</strong> folder.</p>
+<p>The initial build command should like the below which gathers the required packages.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msbuild /t:build /<span class="built_in">restore</span></span><br></pre></td></tr></table></figure>
+
+<p>Subsequent build can be done using this command.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msbuild /t:rebuild</span><br></pre></td></tr></table></figure>
+
+<h3 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h3><p>Once you run one of the <code>msbuild</code> commands, you should find an unmanaged solution file in <strong>📁solution/bin/Debug</strong>.</p>
+<h3 id="What-I-didn’t-cover"><a href="#What-I-didn’t-cover" class="headerlink" title="What I didn’t cover"></a>What I didn’t cover</h3><ul>
+<li>Configuring the control manifest</li>
+<li>Implementing logic and styles</li>
+<li>Building as a managed solution</li>
+<li>Deploying to a CDS environment</li>
+<li>Configuring in a model-driven app</li>
+</ul>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+
+
+            </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/ryanspain" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2021 Ryan Spain<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
